@@ -1,4 +1,4 @@
-component extends="algid.inc.resource.base.service" {
+component extends="plugins.mongodb.inc.resource.base.service" {
 	public void function archiveAccount(required component account) {
 		local.observer = getPluginObserver('account', 'account');
 		local.collection = variables.db.getCollection( 'account.account' );
@@ -13,7 +13,7 @@ component extends="algid.inc.resource.base.service" {
 		observer.afterArchive(variables.transport, arguments.account);
 	}
 	
-	public component function getAccount(required string userID) {
+	public component function getAccount(required string accountID) {
 		local.account = getModel('account', 'account');
 		
 		if (arguments.accountID neq '') {
@@ -37,7 +37,7 @@ component extends="algid.inc.resource.base.service" {
 		
 		// Expand the with defaults
 		arguments.filter = extend({
-			'orderBy': 'fullName',
+			'orderBy': 'username',
 			'search': ''
 		}, arguments.filter);
 		
@@ -82,9 +82,14 @@ component extends="algid.inc.resource.base.service" {
 		local.sort = {};
 		
 		switch (arguments.filter.orderBy) {
-			defaultcase: {
-				local.sort['account'] = 1;
-			}
+		case 'fullName':
+			local.sort['fullName'] = 1;
+			
+			break;
+		default:
+			local.sort['username'] = 1;
+			
+			break;
 		}
 		
 		return collection.find( local.query ).sort(local.sort);
