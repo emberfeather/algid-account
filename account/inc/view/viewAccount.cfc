@@ -66,7 +66,7 @@
 		
 		i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', i18n);
+		theForm = variables.transport.theApplication.factories.transient.getFormModel('account', i18n);
 		
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -74,26 +74,11 @@
 		
 		address = arguments.account.getAddress();
 		
-		theForm.addElement('text', {
-			name = "username",
-			label = "username",
-			required = true,
-			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : arguments.account.getUsername() )
-		});
-		
-		theForm.addElement('text', {
-			name = "fullName",
-			label = "fullName",
-			required = true,
-			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : arguments.account.getFullName() )
-		});
-		
-		theForm.addElement('email', {
-			name = "email",
-			label = "email",
-			required = true,
-			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
-		});
+		theForm.fromModel(
+			arguments.account,
+			arguments.request,
+			['username', 'fullName', 'email']
+		);
 		
 		theForm.addElement('password', {
 			name = "password",
@@ -106,7 +91,7 @@
 			name = "passwordConfirm",
 			label = "passwordConfirm",
 			required = arguments.account.getPasswordHash() == '',
-			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
+			value = ( structKeyExists(arguments.request, 'passwordConfirm') ? arguments.request.passwordConfirm : '' )
 		});
 		
 		return theForm.toHTML(theURL.get());

@@ -9,19 +9,35 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Email
 		add__attribute(
-			attribute = 'email'
+			attribute = 'email',
+			form = {
+				elementType: 'email',
+				options: {
+					required: true
+				}
+			}
 		);
 		
 		// Full Name
 		add__attribute(
 			attribute = 'fullName',
-			defaultValue = 'Guest'
+			defaultValue = 'Guest',
+			form = {
+				elementType: 'text',
+				options: {
+					required: true
+				}
+			}
 		);
 		
 		// Is Diety User?
 		add__attribute(
 			attribute = 'isDeity',
-			defaultValue = false
+			defaultValue = false,
+			form = {
+				elementType: 'checkbox',
+				options: {}
+			}
 		);
 		
 		// Language
@@ -34,6 +50,10 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		add__attribute(
 			attribute = 'password',
 			form = {
+				elementType: 'password',
+				options: {
+					required: true
+				},
 				confirm: true
 			}
 		);
@@ -51,7 +71,13 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Username
 		add__attribute(
-			attribute = 'username'
+			attribute = 'username',
+			form = {
+				elementType: 'text',
+				options: {
+					required: true
+				}
+			}
 		);
 		
 		// Set the bundle information for translation
