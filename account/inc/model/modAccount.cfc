@@ -62,7 +62,7 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 	}
 	
 	public string function getDisplayName() {
-		return variables.instance['fullname'];
+		return this.getFullName();
 	}
 	
 	public array function getPermissions(required any schemes) {
