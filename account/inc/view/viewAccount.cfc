@@ -84,7 +84,22 @@
 		theForm.addElement('text', {
 			name = "fullName",
 			label = "fullName",
+			required = true,
 			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : arguments.account.getFullName() )
+		});
+		
+		theForm.addElement('password', {
+			name = "password",
+			label = "password",
+			required = arguments.account.getPasswordHash() == '',
+			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
+		});
+		
+		theForm.addElement('password', {
+			name = "passwordConfirm",
+			label = "passwordConfirm",
+			required = arguments.account.getPasswordHash() == '',
+			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
 		});
 		
 		return theForm.toHTML(theURL.get());

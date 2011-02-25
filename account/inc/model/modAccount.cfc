@@ -30,6 +30,19 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 			defaultValue = 'en-US'
 		);
 		
+		// Password
+		add__attribute(
+			attribute = 'password',
+			form = {
+				confirm: true
+			}
+		);
+		
+		// Password Hash
+		add__attribute(
+			attribute = 'passwordHash'
+		);
+		
 		// Permissions
 		add__attribute(
 			attribute = 'permissions',
