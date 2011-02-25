@@ -88,6 +88,13 @@
 			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : arguments.account.getFullName() )
 		});
 		
+		theForm.addElement('email', {
+			name = "email",
+			label = "email",
+			required = true,
+			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
+		});
+		
 		theForm.addElement('password', {
 			name = "password",
 			label = "password",
