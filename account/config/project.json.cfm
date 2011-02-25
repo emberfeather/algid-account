@@ -2,6 +2,9 @@
 	"applicationSingletons": {
 	},
 	"applicationTransients": {
+		"modAccountForAccount": "plugins.account.inc.model.modAccount",
+		"servAccountForAccount": "plugins.account.inc.service.servAccount",
+		"viewAccountForAccount": "plugins.account.inc.view.viewAccount"
 	},
 	"i18n": {
 		"locales": [
