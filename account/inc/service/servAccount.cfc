@@ -95,6 +95,33 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 		return collection.find( local.query ).sort(local.sort);
 	}
 	
+	public component function login(required string username, required string password) {
+		local.collection = variables.db.getCollection( 'account.account' );
+		
+		// Find a matching account
+		local.query = {
+			'username': arguments.username
+		};
+		
+		local.results = local.collection.find(local.query, { 'username': 1, 'passwordHash': 1 });
+		
+		if(local.results.count() == 1) {
+			local.bcrypt = variables.transport.theApplication.managers.singleton.getBCrypt();
+			local.account = local.results.next();
+			
+			// Check for failed password
+			if(!local.bcrypt.checkpw(arguments.password, local.account.passwordHash)) {
+				throw('validation', 'Username or password incorrect', 'The username or password did not match');
+			}
+			
+			local.account = getAccount(local.account._id);
+			
+			return local.account;
+		} else {
+			throw('validation', 'Username or password incorrect', 'The username or password did not match');
+		}
+	}
+	
 	public void function setAccount(required component account) {
 		local.observer = getPluginObserver('account', 'account');
 		local.collection = variables.db.getCollection( 'account.account' );
