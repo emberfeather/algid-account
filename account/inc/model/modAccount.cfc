@@ -178,6 +178,6 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 	}
 	
 	public boolean function isLoggedIn() {
-		return this.getUserID() neq '';
+		return this.get_ID() neq '';
 	}
 }

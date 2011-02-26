@@ -1,6 +1,6 @@
 <cfcomponent extends="algid.inc.resource.base.view">
 <cfscript>
-	public string function datagrid(required any data, struct options) {
+	public string function datagrid(required any data, struct options = {}) {
 		var datagrid = '';
 		var i18n = '';
 		
@@ -55,7 +55,7 @@
 		return datagrid.toHTML( local.results.toArray(), arguments.options );
 	}
 	
-	public string function edit(required component account, struct request) {
+	public string function edit(required component account, struct request = {}) {
 		var address = '';
 		var i = '';
 		var i18n = '';
@@ -71,8 +71,6 @@
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
 		theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
-		
-		address = arguments.account.getAddress();
 		
 		theForm.fromModel(
 			arguments.account,
@@ -97,7 +95,7 @@
 		return theForm.toHTML(theURL.get());
 	}
 	
-	public string function filterActive(struct filter) {
+	public string function filterActive(struct filter = {}) {
 		var filterActive = '';
 		var options = '';
 		var results = '';
@@ -110,7 +108,7 @@
 		return filterActive.toHTML(arguments.filter, variables.transport.theRequest.managers.singleton.getURL(), 'search');
 	}
 	
-	public string function filter(struct values) {
+	public string function filter(struct values = {}) {
 		var filter = '';
 		var options = '';
 		var results = '';
@@ -124,6 +122,40 @@
 		filter.addFilter('search');
 		
 		return filter.toHTML(variables.transport.theRequest.managers.singleton.getURL(), arguments.values);
+	}
+	
+	public string function login(struct request = {}) {
+		var address = '';
+		var i = '';
+		var i18n = '';
+		var theForm = '';
+		var theURL = '';
+		var question = '';
+		var questions = '';
+		
+		i18n = variables.transport.theApplication.managers.singleton.getI18N();
+		theURL = variables.transport.theRequest.managers.singleton.getUrl();
+		theForm = variables.transport.theApplication.factories.transient.getFormStandard('accountLogin', i18n);
+		
+		// Add the resource bundle for the view
+		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
+		theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
+		
+		theForm.addElement('text', {
+			name = "username",
+			label = "username",
+			required = true,
+			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : '' )
+		});
+		
+		theForm.addElement('password', {
+			name = "password",
+			label = "password",
+			required = true,
+			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
+		});
+		
+		return theForm.toHTML(theURL.get());
 	}
 	
 	public string function overview(required component account) {
