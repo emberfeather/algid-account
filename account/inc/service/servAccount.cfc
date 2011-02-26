@@ -111,14 +111,14 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 			
 			// Check for failed password
 			if(!local.bcrypt.checkpw(arguments.password, local.account.passwordHash)) {
-				throw('validation', 'Username or password incorrect', 'The username or password did not match');
+				throw('Username or password incorrect', 'validation', 'The username or password did not match');
 			}
 			
 			local.account = getAccount(local.account._id);
 			
 			return local.account;
 		} else {
-			throw('validation', 'Username or password incorrect', 'The username or password did not match');
+			throw('Username or password incorrect', 'validation', 'The username or password did not match');
 		}
 	}
 	
