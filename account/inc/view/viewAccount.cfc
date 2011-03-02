@@ -178,5 +178,22 @@
 		
 		return local.html;
 	}
+	
+	public string function profile(required component account) {
+		saveContent variable="local.html" {
+			writeOutput('<div class="image-right">' & arguments.account.getGravatar(110, 'retro') & '</div>');
+			
+			writeOutput('<h3>' & arguments.account.getFullName() & '</h3>');
+			
+			writeOutput('<dl>');
+			
+			writeOutput('<dt>Email</dt>');
+			writeOutput('<dd>' & arguments.account.getEmail() & '</dd>');
+			
+			writeOutput('</dl>');
+		}
+		
+		return local.html;
+	}
 </cfscript>
 </cfcomponent>

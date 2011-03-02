@@ -75,6 +75,12 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		return this.getFullName();
 	}
 	
+	public string function getGravatar(numeric size = 80, string default = 'identicon') {
+		local.img = 'http://www.gravatar.com/avatar/' & lcase(hash(lcase(this.getEmail()), 'md5')) & '?s=' & arguments.size & '&d=' & arguments.default & '&r=g';
+		
+		return '<img src="' & local.img & '" title="' & this.getUsername() & '" />';
+	}
+	
 	public array function getPermissions(required any schemes) {
 		local.permissions = [];
 		
