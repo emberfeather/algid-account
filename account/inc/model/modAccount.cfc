@@ -9,35 +9,19 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Email
 		add__attribute(
-			attribute = 'email',
-			form = {
-				elementType: 'email',
-				options: {
-					required: true
-				}
-			}
+			attribute = 'email'
 		);
 		
 		// Full Name
 		add__attribute(
 			attribute = 'fullName',
-			defaultValue = 'Guest',
-			form = {
-				elementType: 'text',
-				options: {
-					required: true
-				}
-			}
+			defaultValue = 'Guest'
 		);
 		
 		// Is Diety User?
 		add__attribute(
 			attribute = 'isDeity',
-			defaultValue = false,
-			form = {
-				elementType: 'checkbox',
-				options: {}
-			}
+			defaultValue = false
 		);
 		
 		// Language
@@ -48,14 +32,7 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Password
 		add__attribute(
-			attribute = 'password',
-			form = {
-				elementType: 'password',
-				options: {
-					required: true
-				},
-				confirm: true
-			}
+			attribute = 'password'
 		);
 		
 		// Password Hash
@@ -71,13 +48,7 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Username
 		add__attribute(
-			attribute = 'username',
-			form = {
-				elementType: 'text',
-				options: {
-					required: true
-				}
-			}
+			attribute = 'username'
 		);
 		
 		// Set the bundle information for translation

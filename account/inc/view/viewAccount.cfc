@@ -66,17 +66,32 @@
 		
 		i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		theForm = variables.transport.theApplication.factories.transient.getFormModel('account', i18n);
+		theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', i18n);
 		
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
 		theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
 		
-		theForm.fromModel(
-			arguments.account,
-			arguments.request,
-			['username', 'fullName', 'email']
-		);
+		theForm.addElement('text', {
+			name = "username",
+			label = "username",
+			required = true,
+			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : arguments.account.getUsername() )
+		});
+		
+		theForm.addElement('text', {
+			name = "fullName",
+			label = "fullName",
+			required = true,
+			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : arguments.account.getFullName() )
+		});
+		
+		theForm.addElement('email', {
+			name = "email",
+			label = "email",
+			required = true,
+			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
+		});
 		
 		theForm.addElement('password', {
 			name = "password",
