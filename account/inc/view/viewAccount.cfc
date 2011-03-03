@@ -1,4 +1,4 @@
-<cfcomponent extends="algid.inc.resource.base.view">
+<cfcomponent extends='algid.inc.resource.base.view'>
 <cfscript>
 	public string function datagrid(required any data, struct options = {}) {
 		var datagrid = '';
@@ -73,36 +73,36 @@
 		theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
 		
 		theForm.addElement('text', {
-			name = "username",
-			label = "username",
+			name = 'username',
+			label = 'username',
 			required = true,
 			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : arguments.account.getUsername() )
 		});
 		
 		theForm.addElement('text', {
-			name = "fullName",
-			label = "fullName",
+			name = 'fullName',
+			label = 'fullName',
 			required = true,
 			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : arguments.account.getFullName() )
 		});
 		
 		theForm.addElement('email', {
-			name = "email",
-			label = "email",
+			name = 'email',
+			label = 'email',
 			required = true,
 			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
 		});
 		
 		theForm.addElement('password', {
-			name = "password",
-			label = "password",
+			name = 'password',
+			label = 'password',
 			required = arguments.account.getPasswordHash() == '',
 			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
 		});
 		
 		theForm.addElement('password', {
-			name = "passwordConfirm",
-			label = "passwordConfirm",
+			name = 'passwordConfirm',
+			label = 'passwordConfirm',
 			required = arguments.account.getPasswordHash() == '',
 			value = ( structKeyExists(arguments.request, 'passwordConfirm') ? arguments.request.passwordConfirm : '' )
 		});
@@ -157,15 +157,15 @@
 		theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
 		
 		theForm.addElement('text', {
-			name = "username",
-			label = "username",
+			name = 'username',
+			label = 'username',
 			required = true,
 			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : '' )
 		});
 		
 		theForm.addElement('password', {
-			name = "password",
-			label = "password",
+			name = 'password',
+			label = 'password',
 			required = true,
 			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
 		});
@@ -180,7 +180,7 @@
 	}
 	
 	public string function profile(required component account) {
-		saveContent variable="local.html" {
+		saveContent variable='local.html' {
 			writeOutput('<div class="image-right">' & arguments.account.getGravatar(110, 'retro') & '</div>');
 			
 			writeOutput('<h3>' & arguments.account.getFullName() & '</h3>');
@@ -194,6 +194,110 @@
 		}
 		
 		return local.html;
+	}
+	
+	public string function register(required component account, struct request = {}) {
+		// TODO Make this better
+		if(arguments.account.isLoggedIn()) {
+			return 'Please logout to register for an account.';
+		}
+		
+		local.i18n = variables.transport.theApplication.managers.singleton.getI18N();
+		local.theURL = variables.transport.theRequest.managers.singleton.getUrl();
+		local.theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', local.i18n);
+		
+		// Add the resource bundle for the view
+		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
+		local.theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
+		
+		local.theForm.addElement('text', {
+			name = 'username',
+			label = 'username',
+			required = true,
+			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : arguments.account.getUsername() )
+		});
+		
+		local.theForm.addElement('text', {
+			name = 'fullName',
+			label = 'fullName',
+			required = true,
+			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : '' )
+		});
+		
+		local.theForm.addElement('email', {
+			name = 'email',
+			label = 'email',
+			required = true,
+			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
+		});
+		
+		local.theForm.addElement('password', {
+			name = 'password',
+			label = 'password',
+			required = arguments.account.getPasswordHash() == '',
+			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
+		});
+		
+		local.theForm.addElement('password', {
+			name = 'passwordConfirm',
+			label = 'passwordConfirm',
+			required = arguments.account.getPasswordHash() == '',
+			value = ( structKeyExists(arguments.request, 'passwordConfirm') ? arguments.request.passwordConfirm : '' )
+		});
+		
+		return local.theForm.toHTML(theURL.get());
+	}
+	
+	public string function settings(required component account, struct request = {}) {
+		// TODO Make this better
+		if(!arguments.account.isLoggedIn()) {
+			return 'Please login to edit account settings.';
+		}
+		
+		local.i18n = variables.transport.theApplication.managers.singleton.getI18N();
+		local.theURL = variables.transport.theRequest.managers.singleton.getUrl();
+		local.theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', local.i18n);
+		
+		// Add the resource bundle for the view
+		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
+		local.theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
+		
+		local.theForm.addElement('text', {
+			name = 'username',
+			label = 'username',
+			disabled = true,
+			value = arguments.account.getUsername()
+		});
+		
+		local.theForm.addElement('text', {
+			name = 'fullName',
+			label = 'fullName',
+			required = true,
+			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : arguments.account.getFullName() )
+		});
+		
+		local.theForm.addElement('email', {
+			name = 'email',
+			label = 'email',
+			required = true,
+			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
+		});
+		
+		local.theForm.addElement('password', {
+			name = 'password',
+			label = 'password',
+			required = arguments.account.getPasswordHash() == '',
+			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
+		});
+		
+		local.theForm.addElement('password', {
+			name = 'passwordConfirm',
+			label = 'passwordConfirm',
+			required = arguments.account.getPasswordHash() == '',
+			value = ( structKeyExists(arguments.request, 'passwordConfirm') ? arguments.request.passwordConfirm : '' )
+		});
+		
+		return local.theForm.toHTML(theURL.get());
 	}
 </cfscript>
 </cfcomponent>
