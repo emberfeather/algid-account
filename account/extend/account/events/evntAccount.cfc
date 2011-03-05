@@ -1,9 +1,32 @@
 component extends="algid.inc.resource.base.event" {
 	public void function beforeSave(required struct transport, required component account) {
-		if(account.getPassword() != '') {
+		// Validate the submission
+		if(arguments.account.get_id() eq '') {
+			local.servAccount = getService(arguments.transport, 'account', 'account');
+			
+			if(arguments.account.getPassword() == '') {
+				throw(type = 'validation', message = 'Missing password', detail = 'The password is required.');
+			}
+			
+			// Make sure that the username is unique
+			local.accounts = local.servAccount.getAccounts({ username: arguments.account.getUsername() });
+			
+			if(local.accounts.count() > 0) {
+				throw(type = 'validation', message = 'Username already in use', detail = 'The username ''' & arguments.account.getUsername() & ''' is unavailable.');
+			}
+			
+			// Make sure that the email is unique
+			local.accounts = local.servAccount.getAccounts({ email: arguments.account.getEmail() });
+			
+			if(local.accounts.count() > 0) {
+				throw(type = 'validation', message = 'Email already in use', detail = 'The email ''' & arguments.account.getEmail() & ''' is already being used.');
+			}
+		}
+		
+		if(arguments.account.getPassword() != '') {
 			// Validate the password confirmation matches
-			if(account.getPassword() != account.getPasswordConfirm()) {
-				throw('validation', 'Password confirmation did not match', 'The password confirmation did not match the password.');
+			if(arguments.account.getPassword() != arguments.account.getPasswordConfirm()) {
+				throw(type = 'validation', message = 'Password confirmation did not match', 'The password confirmation did not match the password.');
 			}
 			
 			// TODO Validate password strength against the password settings
@@ -23,7 +46,7 @@ component extends="algid.inc.resource.base.event" {
 		local.eventLog = arguments.transport.theApplication.managers.singleton.getEventLog();
 		
 		// TODO use i18n
-		local.eventLog.logEvent('account', 'accountCreate', 'Created the account for ''' & arguments.account.getDisplayName() & '''.', arguments.transport.theSession.managers.singleton.getUser().getUserID(), arguments.account.get_ID());
+		local.eventLog.logEvent('account', 'accountCreate', detail = 'Created the account for ''' & arguments.account.getDisplayName() & '''.', arguments.transport.theSession.managers.singleton.getUser().getUserID(), arguments.account.get_ID());
 		
 		// Add success message
 		arguments.transport.theSession.managers.singleton.getSuccess().addMessages('The ''' & arguments.account.getDisplayName() & ''' account was successfully created.');

@@ -34,6 +34,7 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 	
 	public component function getAccounts(struct filter = {}) {
 		local.collection = variables.db.getCollection( 'account.account' );
+		local.utility = variables.transport.theApplication.managers.singleton.getMongoUtility();
 		
 		// Expand the with defaults
 		arguments.filter = extend({
@@ -49,10 +50,20 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 		// Search
 		if (arguments.filter.search neq '') {
 			local.query['$or'] = [
-				{ 'username': collection.regex(arguments.filter.search, 'i') },
-				{ 'fullName': collection.regex(arguments.filter.search, 'i') },
-				{ 'email': collection.regex(arguments.filter.search, 'i') }
+				{ 'username': local.utility.regex( local.utility.reEscape(arguments.filter.search), 'i') },
+				{ 'fullName': local.utility.regex( local.utility.reEscape(arguments.filter.search), 'i') },
+				{ 'email': local.utility.regex( local.utility.reEscape(arguments.filter.search), 'i') }
 			];
+		}
+		
+		// Email exact case-insensitive match
+		if (structKeyExists(arguments.filter, 'email')) {
+			local.query['email'] = local.utility.regex( '^' & local.utility.reEscape(arguments.filter.email) & '$', 'i');
+		}
+		
+		// Username exact case-insensitive match
+		if (structKeyExists(arguments.filter, 'username')) {
+			local.query['username'] = local.utility.regex( '^' & local.utility.reEscape(arguments.filter.username) & '$', 'i');
 		}
 		
 		// Is Archived?
@@ -127,6 +138,8 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 		local.collection = variables.db.getCollection( 'account.account' );
 		
 		local.modelSerial = variables.transport.theApplication.factories.transient.getModelSerial(variables.transport);
+		
+		validate__model(arguments.account);
 		
 		// Before Save Event
 		local.observer.beforeSave(variables.transport, arguments.account);
