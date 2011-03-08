@@ -84,6 +84,11 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 			}
 		}
 		
+		// Not in ID
+		if (structKeyExists(arguments.filter, 'nin_id')) {
+			local.query['_id'] = { '$nin': arguments.filter.nin_id };
+		}
+		
 		// In ID
 		if (structKeyExists(arguments.filter, 'in_id')) {
 			local.query['_id'] = { '$in': arguments.filter.in_id };

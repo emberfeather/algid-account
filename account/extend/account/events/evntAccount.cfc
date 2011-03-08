@@ -1,26 +1,26 @@
 component extends="algid.inc.resource.base.event" {
 	public void function beforeSave(required struct transport, required component account) {
+		local.servAccount = getService(arguments.transport, 'account', 'account');
+		
 		// Validate the submission
 		if(arguments.account.get_id() eq '') {
-			local.servAccount = getService(arguments.transport, 'account', 'account');
-			
 			if(arguments.account.getPassword() == '') {
 				throw(type = 'validation', message = 'Missing password', detail = 'The password is required.');
 			}
-			
-			// Make sure that the username is unique
-			local.accounts = local.servAccount.getAccounts({ username: arguments.account.getUsername() });
-			
-			if(local.accounts.count() > 0) {
-				throw(type = 'validation', message = 'Username already in use', detail = 'The username ''' & arguments.account.getUsername() & ''' is unavailable.');
-			}
-			
-			// Make sure that the email is unique
-			local.accounts = local.servAccount.getAccounts({ email: arguments.account.getEmail() });
-			
-			if(local.accounts.count() > 0) {
-				throw(type = 'validation', message = 'Email already in use', detail = 'The email ''' & arguments.account.getEmail() & ''' is already being used.');
-			}
+		}
+		
+		// Make sure that the username is unique
+		local.accounts = local.servAccount.getAccounts({ username: arguments.account.getUsername(), nin_id: [ arguments.account.get_id() ] });
+		
+		if(local.accounts.count() > 0) {
+			throw(type = 'validation', message = 'Username already in use', detail = 'The username ''' & arguments.account.getUsername() & ''' is unavailable.');
+		}
+		
+		// Make sure that the email is unique
+		local.accounts = local.servAccount.getAccounts({ email: arguments.account.getEmail(), nin_id: [ arguments.account.get_id() ] });
+		
+		if(local.accounts.count() > 0) {
+			throw(type = 'validation', message = 'Email already in use', detail = 'The email ''' & arguments.account.getEmail() & ''' is already being used.');
 		}
 		
 		if(arguments.account.getPassword() != '') {
