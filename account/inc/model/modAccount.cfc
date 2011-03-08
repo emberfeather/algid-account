@@ -2,6 +2,9 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 	public component function init(required component i18n, string locale = 'en_US') {
 		super.init(arguments.i18n, arguments.locale);
 		
+		// Set the bundle information for translation
+		add__bundle('plugins/account/i18n/inc/model', 'modAccount');
+		
 		// Account ID
 		add__attribute(
 			attribute = '_id'
@@ -9,19 +12,30 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Email
 		add__attribute(
-			attribute = 'email'
+			attribute = 'email',
+			validation = {
+				notEmpty: true,
+				validEmail = true
+			}
 		);
 		
 		// Full Name
 		add__attribute(
 			attribute = 'fullName',
-			defaultValue = 'Guest'
+			defaultValue = 'Guest',
+			validation = {
+				minLength: 2,
+				notEmpty: true
+			}
 		);
 		
 		// Is Diety User?
 		add__attribute(
 			attribute = 'isDeity',
-			defaultValue = false
+			defaultValue = false,
+			validation = {
+				isBoolean: true
+			}
 		);
 		
 		// Language
@@ -53,11 +67,14 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		
 		// Username
 		add__attribute(
-			attribute = 'username'
+			attribute = 'username',
+			validation = {
+				minLength: 2,
+				noWhitespace: true,
+				notEmpty: true,
+				notIn: 'admin, administrator, anonymous, guest, moderator, nobody, owner, root, test, user'
+			}
 		);
-		
-		// Set the bundle information for translation
-		add__bundle('plugins/account/i18n/inc/model', 'modAccount');
 		
 		return this;
 	}
