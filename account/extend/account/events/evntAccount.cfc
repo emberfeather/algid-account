@@ -26,7 +26,7 @@ component extends="algid.inc.resource.base.event" {
 		if(arguments.account.getPassword() != '') {
 			// Validate the password confirmation matches
 			if(arguments.account.getPassword() != arguments.account.getPasswordConfirm()) {
-				throw(type = 'validation', message = 'Password confirmation did not match', 'The password confirmation did not match the password.');
+				throw(type = 'validation', message = 'Password confirmation did not match', detail = 'The password confirmation did not match the password.');
 			}
 			
 			// TODO Validate password strength against the password settings
@@ -46,7 +46,7 @@ component extends="algid.inc.resource.base.event" {
 		local.eventLog = arguments.transport.theApplication.managers.singleton.getEventLog();
 		
 		// TODO use i18n
-		local.eventLog.logEvent('account', 'accountCreate', detail = 'Created the account for ''' & arguments.account.getDisplayName() & '''.', arguments.transport.theSession.managers.singleton.getUser().getUserID(), arguments.account.get_ID());
+		local.eventLog.logEvent('account', 'accountCreate', 'Created the account for ''' & arguments.account.getDisplayName() & '''.', arguments.transport.theSession.managers.singleton.getUser().getUserID(), arguments.account.get_ID());
 		
 		// Add success message
 		arguments.transport.theSession.managers.singleton.getSuccess().addMessages('The ''' & arguments.account.getDisplayName() & ''' account was successfully created.');

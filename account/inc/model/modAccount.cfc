@@ -35,6 +35,11 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 			attribute = 'password'
 		);
 		
+		// Password Confirmation
+		add__attribute(
+			attribute = 'passwordConfirm'
+		);
+		
 		// Password Hash
 		add__attribute(
 			attribute = 'passwordHash'
