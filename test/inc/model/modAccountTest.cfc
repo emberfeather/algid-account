@@ -35,6 +35,21 @@ component extends="algid.inc.resource.base.modelTest" {
 		assertEquals('give,plunder,take', listSort(arrayToList(variables.account.getPermissions('*')), 'text'));
 	}
 	
+	public void function testGetSettingsWithWildcard() {
+		variables.account.setSettings({
+			'bread.top': 'wheat',
+			'topping.top': 'peanut butter',
+			'topping.bottom': 'raspberry jelly',
+			'bread.bottom': 'rye'
+		});
+		
+		local.results = variables.account.getSettings('^topping.*');
+		
+		assertEquals('topping.bottom,topping.top', listSort(structKeyList(local.results), 'text'));
+		assertEquals('peanut butter', local.results['topping.top']);
+		assertEquals('raspberry jelly', local.results['topping.bottom']);
+	}
+	
 	public void function testHasPermission() {
 		variables.account.addPermissions('scheme', 'give');
 		
@@ -76,5 +91,23 @@ component extends="algid.inc.resource.base.modelTest" {
 		variables.account.addPermissions('plan', 'steal');
 		
 		assertFalse(variables.account.hasPermissions(['give', 'steal'], 'scheme'), 'The permissions do not exist in their entirety.');
+	}
+	
+	public void function testSetSetting() {
+		variables.account.setSetting('setting', 'value');
+		
+		assertEquals('setting', listSort(structKeyList(variables.account.getSettings()), 'text'));
+		assertEquals('value', variables.account.getSetting('setting'));
+	}
+	
+	public void function testSetSettings() {
+		variables.account.setSettings({
+			'peanut': 'butter',
+			'raspberry': 'jelly'
+		});
+		
+		assertEquals('peanut,raspberry', listSort(structKeyList(variables.account.getSettings()), 'text'));
+		assertEquals('butter', variables.account.getSetting('peanut'));
+		assertEquals('jelly', variables.account.getSetting('raspberry'));
 	}
 }

@@ -65,6 +65,12 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 			defaultValue = {}
 		);
 		
+		// Settings
+		add__attribute(
+			attribute = 'settings',
+			defaultValue = {}
+		);
+		
 		// Username
 		add__attribute(
 			attribute = 'username',
@@ -134,6 +140,28 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		return permissions;
 	}
 	
+	public any function getSetting(required string key) {
+		return variables.instance['settings'][arguments.key];
+	}
+	
+	public struct function getSettings(string regex = '') {
+		local.results = {};
+		
+		if(len(arguments.regex)) {
+			local.keys = listToArray(structKeyList(variables.instance['settings']));
+			
+			for( local.i = 1; local.i <= arrayLen(local.keys); local.i++ ) {
+				if(reFindNoCase(arguments.regex, local.keys[local.i])) {
+					local.results[local.keys[local.i]] = variables.instance['settings'][local.keys[local.i]];
+				}
+			}
+			
+			return local.results;
+		}
+		
+		return variables.instance['settings'];
+	}
+	
 	public boolean function hasPermission(required string permission, required any schemes) {
 		// Check for master users
 		if (this.getIsDeity() eq true) {
@@ -178,5 +206,17 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 	
 	public boolean function isLoggedIn() {
 		return this.get_ID() neq '';
+	}
+	
+	public void function setSetting(required string setting, required any value) {
+		variables.instance['settings'][arguments.setting] = arguments.value;
+	}
+	
+	public void function setSettings(required struct settings) {
+		local.keys = listToArray(structKeyList(arguments.settings));
+		
+		for( local.i = 1; local.i <= arrayLen(local.keys); local.i++ ) {
+			variables.instance['settings'][local.keys[local.i]] = arguments.settings[local.keys[local.i]]
+		}
 	}
 }
