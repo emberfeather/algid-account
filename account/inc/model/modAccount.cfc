@@ -141,6 +141,10 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 	}
 	
 	public any function getSetting(required string key) {
+		if(not structKeyExists(variables.instance.settings, arguments.key)) {
+			return '';
+		}
+		
 		return variables.instance['settings'][arguments.key];
 	}
 	

@@ -35,6 +35,10 @@ component extends="algid.inc.resource.base.modelTest" {
 		assertEquals('give,plunder,take', listSort(arrayToList(variables.account.getPermissions('*')), 'text'));
 	}
 	
+	public void function testGetSettingWithoutSetting() {
+		assertEquals('', variables.account.getSetting('hobbit'));
+	}
+	
 	public void function testGetSettingsWithWildcard() {
 		variables.account.setSettings({
 			'bread.top': 'wheat',
