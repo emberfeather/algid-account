@@ -208,6 +208,10 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		return true;
 	}
 	
+	public boolean function hasSetting( required any setting ) {
+		return structKeyExists(variables.instance.settings, arguments.setting);
+	}
+	
 	public boolean function isLoggedIn() {
 		return this.get_ID() neq '';
 	}

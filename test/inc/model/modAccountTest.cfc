@@ -97,6 +97,16 @@ component extends="algid.inc.resource.base.modelTest" {
 		assertFalse(variables.account.hasPermissions(['give', 'steal'], 'scheme'), 'The permissions do not exist in their entirety.');
 	}
 	
+	public void function testHasSetting() {
+		variables.account.setSetting('scheme', 'give');
+		
+		assertTrue(variables.account.hasSetting('scheme'), 'The settings should exist.');
+	}
+	
+	public void function testHasSettingSansPermission() {
+		assertFalse(variables.account.hasSetting('scheme'), 'The setting should not exist without being set');
+	}
+	
 	public void function testSetSetting() {
 		variables.account.setSetting('setting', 'value');
 		
