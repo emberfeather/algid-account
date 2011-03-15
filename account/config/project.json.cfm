@@ -2,6 +2,9 @@
 	"applicationSingletons": {
 	},
 	"applicationTransients": {
+		"modAccountForAccount": "plugins.account.inc.model.modAccount",
+		"servAccountForAccount": "plugins.account.inc.service.servAccount",
+		"viewAccountForAccount": "plugins.account.inc.view.viewAccount"
 	},
 	"i18n": {
 		"locales": [
@@ -11,6 +14,8 @@
 	"key": "account",
 	"plugin": "Account",
 	"prerequisites": {
+		"mongodb": "0.1.2",
+		"security": "0.1.1"
 	},
 	"requestSingletons": {
 	},
