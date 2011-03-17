@@ -220,11 +220,11 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		variables.instance['settings'][arguments.setting] = arguments.value;
 	}
 	
-	public void function setSettings(struct settings = {}) {
-		local.keys = listToArray(structKeyList(arguments.settings));
+	public void function setSettings(struct value = {}) {
+		local.keys = listToArray(structKeyList(arguments.value));
 		
 		for( local.i = 1; local.i <= arrayLen(local.keys); local.i++ ) {
-			variables.instance['settings'][local.keys[local.i]] = arguments.settings[local.keys[local.i]]
+			variables.instance['settings'][local.keys[local.i]] = arguments.value[local.keys[local.i]];
 		}
 	}
 }
