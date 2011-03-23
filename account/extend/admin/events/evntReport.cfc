@@ -1,19 +1,20 @@
-<cfcomponent extends="algid.inc.resource.base.event" output="false">
-	<cffunction name="generate" access="public" returntype="void" output="false">
-		<cfargument name="transport" type="struct" required="true" />
-		<cfargument name="task" type="component" required="true" />
-		<cfargument name="options" type="struct" required="true" />
-		<cfargument name="report" type="component" required="true" />
+component extends="algid.inc.resource.base.event" {
+	public void function generate(required struct transport, required component task, required struct options, required component report) {
+		local.servAccount = getService(arguments.transport, 'account', 'account');
 		
-		<cfset local.servAccount = getService(arguments.transport, 'account', 'account') />
+		local.recentlyCreated = local.servAccount.getAccounts({ createdAfter: dateAdd('s', -1 * arguments.task.getInterval(), now()) });
+		local.recentlyLoggedIn = local.servAccount.getAccounts({ loginAfter: dateAdd('s', -1 * arguments.task.getInterval(), now()) });
 		
-		<cfset local.section = local.servAccount.getModel('admin', 'reportSection') />
-		
-		<cfset local.section.setTitle('Accounts') />
-		<cfset local.section.setContent('Testing accounts!') />
-		
-		<cfif not local.section.isBlank()>
-			<cfset report.addSections(local.section) />
-		</cfif>
-	</cffunction>
-</cfcomponent>
+		// Only need more if there are accounts to report on
+		if (local.recentlyCreated.count() or local.recentlyLoggedIn.count()) {
+			local.viewAccount = getView(arguments.transport, 'account', 'account');
+			
+			local.section = local.servAccount.getModel('admin', 'reportSection');
+			
+			local.section.setTitle('Accounts');
+			local.section.setContent(local.viewAccount.reportAccounts(local.recentlyCreated, local.recentlyLoggedIn));
+			
+			report.addSections(local.section);
+		}
+	}
+}

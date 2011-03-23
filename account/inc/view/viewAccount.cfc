@@ -248,6 +248,20 @@
 		return local.theForm.toHTML(theURL.get());
 	}
 	
+	public string function reportAccounts(required component recentlyCreated, required component recentlyLoggedIn) {
+		local.html = '<dl>';
+		
+		local.html &= '<dt>Accounts created</dt>';
+		local.html &= '<dd>' & arguments.recentlyCreated.count() & '</dd>';
+		
+		local.html &= '<dt>Accounts logged in</dt>';
+		local.html &= '<dd>' & arguments.recentlyLoggedIn.count() & '</dd>';
+		
+		local.html &= '</dl>';
+		
+		return local.html;
+	}
+	
 	public string function settings(required component account, struct request = {}) {
 		// TODO Make this better
 		if(!arguments.account.isLoggedIn()) {
