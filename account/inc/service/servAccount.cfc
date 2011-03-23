@@ -132,6 +132,11 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 			
 			local.account = getAccount(local.account._id);
 			
+			// Update the last login
+			local.account.setLoginOn(now());
+			
+			collection.update({ '_id': local.account.get_ID() }, { '$set': { 'loginOn': local.account.getLoginOn() }});
+			
 			return local.account;
 		} else {
 			throw('Username or password incorrect', 'validation', 'The username or password did not match');

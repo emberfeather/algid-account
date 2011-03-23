@@ -10,6 +10,12 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 			attribute = '_id'
 		);
 		
+		// Created On
+		add__attribute(
+			attribute = 'createdOn',
+			defaultValue = now()
+		);
+		
 		// Email
 		add__attribute(
 			attribute = 'email',
@@ -42,6 +48,12 @@ component extends="plugins.mongodb.inc.resource.base.model" {
 		add__attribute(
 			attribute = 'language',
 			defaultValue = 'en-US'
+		);
+		
+		// Last Logged In
+		add__attribute(
+			attribute = 'loginOn',
+			defaultValue = now()
 		);
 		
 		// Password
