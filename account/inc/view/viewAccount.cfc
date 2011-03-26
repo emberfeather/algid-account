@@ -66,7 +66,7 @@
 		
 		i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', i18n);
+		theForm = variables.transport.theApplication.factories.transient.getForm('account', i18n);
 		
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -150,7 +150,7 @@
 		
 		i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		theForm = variables.transport.theApplication.factories.transient.getFormStandard('accountLogin', i18n);
+		theForm = variables.transport.theApplication.factories.transient.getForm('accountLogin', i18n);
 		
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -204,7 +204,7 @@
 		
 		local.i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		local.theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		local.theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', local.i18n);
+		local.theForm = variables.transport.theApplication.factories.transient.getForm('account', local.i18n);
 		
 		// Add the resource bundle for the view
 		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -270,7 +270,7 @@
 		
 		local.i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		local.theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		local.theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', local.i18n);
+		local.theForm = variables.transport.theApplication.factories.transient.getForm('account', local.i18n);
 		
 		// Add the resource bundle for the view
 		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
