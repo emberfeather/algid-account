@@ -66,7 +66,7 @@
 		
 		i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', i18n);
+		theForm = variables.transport.theApplication.factories.transient.getForm('account', i18n);
 		
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -150,7 +150,7 @@
 		
 		i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		theForm = variables.transport.theApplication.factories.transient.getFormStandard('accountLogin', i18n);
+		theForm = variables.transport.theApplication.factories.transient.getForm('accountLogin', i18n);
 		
 		// Add the resource bundle for the view
 		theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -204,7 +204,7 @@
 		
 		local.i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		local.theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		local.theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', local.i18n);
+		local.theForm = variables.transport.theApplication.factories.transient.getForm('account', local.i18n);
 		
 		// Add the resource bundle for the view
 		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
@@ -248,6 +248,20 @@
 		return local.theForm.toHTML(theURL.get());
 	}
 	
+	public string function reportAccounts(required component recentlyCreated, required component recentlyLoggedIn) {
+		local.html = '<dl>';
+		
+		local.html &= '<dt>Accounts created</dt>';
+		local.html &= '<dd>' & arguments.recentlyCreated.count() & '</dd>';
+		
+		local.html &= '<dt>Accounts logged in</dt>';
+		local.html &= '<dd>' & arguments.recentlyLoggedIn.count() & '</dd>';
+		
+		local.html &= '</dl>';
+		
+		return local.html;
+	}
+	
 	public string function settings(required component account, struct request = {}) {
 		// TODO Make this better
 		if(!arguments.account.isLoggedIn()) {
@@ -256,7 +270,7 @@
 		
 		local.i18n = variables.transport.theApplication.managers.singleton.getI18N();
 		local.theURL = variables.transport.theRequest.managers.singleton.getUrl();
-		local.theForm = variables.transport.theApplication.factories.transient.getFormStandard('account', local.i18n);
+		local.theForm = variables.transport.theApplication.factories.transient.getForm('account', local.i18n);
 		
 		// Add the resource bundle for the view
 		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');

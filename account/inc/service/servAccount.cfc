@@ -94,6 +94,26 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 			local.query['_id'] = { '$in': arguments.filter.in_id };
 		}
 		
+		// Created After
+		if (structKeyExists(arguments.filter, 'createdAfter')) {
+			local.query['createdOn'] = { '$gte': arguments.filter.createdAfter };
+		}
+		
+		// Created Before
+		if (structKeyExists(arguments.filter, 'createdBefore')) {
+			local.query['createdOn'] = { '$lte': arguments.filter.createdBefore };
+		}
+		
+		// Logged In After
+		if (structKeyExists(arguments.filter, 'loginAfter')) {
+			local.query['loginOn'] = { '$gte': arguments.filter.loginAfter };
+		}
+		
+		// Logged In Before
+		if (structKeyExists(arguments.filter, 'loginBefore')) {
+			local.query['loginOn'] = { '$lte': arguments.filter.loginBefore };
+		}
+		
 		// Sorting
 		local.sort = {};
 		
@@ -131,6 +151,11 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 			}
 			
 			local.account = getAccount(local.account._id);
+			
+			// Update the last login
+			local.account.setLoginOn(now());
+			
+			collection.update({ '_id': local.account.get_ID() }, { '$set': { 'loginOn': local.account.getLoginOn() }});
 			
 			return local.account;
 		} else {
