@@ -132,6 +132,7 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 	}
 	
 	public component function login(required string username, required string password) {
+		local.observer = getPluginObserver('account', 'account');
 		local.collection = variables.db.getCollection( 'account.account' );
 		
 		// Find a matching account
@@ -156,6 +157,8 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 			local.account.setLoginOn(now());
 			
 			collection.update({ '_id': local.account.get_ID() }, { '$set': { 'loginOn': local.account.getLoginOn() }});
+			
+			local.observer.afterLogin(variables.transport, local.account);
 			
 			return local.account;
 		} else {
