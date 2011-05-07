@@ -1,8 +1,8 @@
 {
-	"archive": "http://github.com/emberfeather/algid-account/tarball/0.1.2",
+	"archive": "http://github.com/emberfeather/algid-account/tarball/0.1.3",
 	"key": "account",
 	"releaseNotes": "http://github.com/emberfeather/algid-account/wiki/Release-Notes",
 	"title": "Plugins",
 	"URL": "http://github.com/emberfeather/algid-account",
-	"version": "0.1.2"
+	"version": "0.1.3"
 }
