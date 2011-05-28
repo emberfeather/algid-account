@@ -258,7 +258,8 @@
 			label = 'recaptcha',
 			required = true,
 			value = arguments.recaptcha.public,
-			error = local.error
+			error = local.error,
+			theme = 'white'
 		});
 		
 		return local.theForm.toHTML(theURL.get());
