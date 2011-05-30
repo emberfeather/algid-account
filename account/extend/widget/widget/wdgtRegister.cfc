@@ -27,8 +27,6 @@ component extends="plugins.widget.inc.resource.base.widget" {
 			}
 		}
 		
-		// TODO get the public key for the domain
-		
 		return variables.viewAccount.register(local.account, arguments.args.recaptcha);
 	}
 	
