@@ -196,7 +196,7 @@
 		return local.html;
 	}
 	
-	public string function register(required component account, struct request = {}) {
+	public string function register(required component account, required struct recaptcha) {
 		// TODO Make this better
 		if(arguments.account.isLoggedIn()) {
 			return 'Please logout to register for an account.';
@@ -210,39 +210,56 @@
 		local.theForm.addBundle('plugins/account/i18n/inc/view', 'viewAccount');
 		local.theForm.addBundle('plugins/account/i18n/inc/model', 'modAccount');
 		
+		local.error = '';
+		
+		if(arguments.account.hasError()) {
+			local.error = arguments.account.getError();
+			
+			arguments.account.unsetError();
+		}
+		
 		local.theForm.addElement('text', {
 			name = 'username',
 			label = 'username',
 			required = true,
-			value = ( structKeyExists(arguments.request, 'username') ? arguments.request.username : arguments.account.getUsername() )
+			value = arguments.account.getUsername()
 		});
 		
 		local.theForm.addElement('text', {
 			name = 'fullName',
 			label = 'fullName',
 			required = true,
-			value = ( structKeyExists(arguments.request, 'fullName') ? arguments.request.fullName : '' )
+			value = arguments.account.getFullName() != 'guest' ? arguments.account.getFullName() : ''
 		});
 		
 		local.theForm.addElement('email', {
 			name = 'email',
 			label = 'email',
 			required = true,
-			value = ( structKeyExists(arguments.request, 'email') ? arguments.request.email : arguments.account.getEmail() )
+			value = arguments.account.getEmail()
 		});
 		
 		local.theForm.addElement('password', {
 			name = 'password',
 			label = 'password',
 			required = arguments.account.getPasswordHash() == '',
-			value = ( structKeyExists(arguments.request, 'password') ? arguments.request.password : '' )
+			value = ''
 		});
 		
 		local.theForm.addElement('password', {
 			name = 'passwordConfirm',
 			label = 'passwordConfirm',
 			required = arguments.account.getPasswordHash() == '',
-			value = ( structKeyExists(arguments.request, 'passwordConfirm') ? arguments.request.passwordConfirm : '' )
+			value = ''
+		});
+		
+		local.theForm.addElement('recaptcha', {
+			name = 'recaptcha',
+			label = 'recaptcha',
+			required = true,
+			value = arguments.recaptcha.public,
+			error = local.error,
+			theme = 'white'
 		});
 		
 		return local.theForm.toHTML(theURL.get());
