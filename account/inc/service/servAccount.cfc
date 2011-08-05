@@ -172,6 +172,7 @@ component extends="plugins.mongodb.inc.resource.base.service" {
 		
 		local.modelSerial = variables.transport.theApplication.factories.transient.getModelSerial(variables.transport);
 		
+		scrub__model(arguments.account);
 		validate__model(arguments.account);
 		
 		// Before Save Event
