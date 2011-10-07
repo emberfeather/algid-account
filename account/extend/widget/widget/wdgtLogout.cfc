@@ -1,6 +1,6 @@
 component extends="plugins.widget.inc.resource.base.widget" {
-	public component function init(required struct transport) {
-		super.init(arguments.transport);
+	public component function init(required struct transport, required string path) {
+		super.init(arguments.transport, arguments.path);
 		
 		variables.servAccount = getService('account', 'account');
 		variables.viewAccount = getView('account', 'account');
